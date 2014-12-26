@@ -5,6 +5,41 @@ a	b	c	ĉ	d	e	f	g	ĝ	h	ĥ	i	j	ĵ	k	l	m	n	o	p	r	s	ŝ	t	u	ŭ	v	z
 var request1, request2, request3, request4;
 var JSON_object1, JSON_object2, JSON_object3, JSON_object4;
 var strofesNumber = 4;
+function generatePoem(/*templatesURL, */form)
+{
+/*
+Функция, котороя берет четыре шаблона с рифмой АBАB и подставляет в них слова
+Первый шаблон берется любым. Третий берется такой, у которого последняя морфема та же, что и у первого. 
+Второй шаблон берется любой, у которого на конце морфема, отличающаяся от морфемы на конце первого и третьего шаблонов. 
+Четвертый шаблон с такой же морфемой на конце, что и у второго
+*/
+	request1 = new XMLHttpRequest();
+	request1.open("GET", "./dictionaries/verbs.json", false);
+	request1.send(null);
+	JSON_object1 = JSON.parse(request1.responseText);
+
+	request2 = new XMLHttpRequest();
+	request2.open("GET", "./dictionaries/nouns.json", false);
+	request2.send(null);
+	JSON_object2 = JSON.parse(request2.responseText);
+
+	request3 = new XMLHttpRequest();
+	request3.open("GET", "./dictionaries/adjectives.json", false);
+	request3.send(null);
+	JSON_object3 = JSON.parse(request3.responseText);
+
+	request_templates = new XMLHttpRequest();
+	request_templates.open("GET", "./templates/sentenseTemplates.json", false);
+	request_templates.send(null);
+	JSON_object_templates = JSON.parse(request_templates.responseText);
+
+	var poemSentences = new Array();
+	var templates = chooseTemplates();
+	parseTemplates(poemSentences, templates);
+	templatize(poemSentences);
+	createRhyme(poemSentences,templates);
+	printPoem(form, poemSentences);
+}
 function setNumberStrofes(numb)
 {
 	strofesNumber = parseInt(numb);	
@@ -105,20 +140,20 @@ function templatize(poemSentences)
 	for (i = 0; i < poemSentences.length; i++)
 		for (j = 0; j < poemSentences[i].words.length; j++)
 		{
-			var dictonaryURL;
+			//var dictonaryURL;
 			if (poemSentences[i].words[j] == "Verb")
 			{
-				dictonaryURL = "./Poem_Generator_files/Dictonary_Verbs.json";
+				//dictonaryURL = "./dictionaries/verbs.json";
 				poemSentences[i].words[j] = JSON_object1[Math.floor(Math.random()*JSON_object1.length)].word;
 			}
 			else if (poemSentences[i].words[j] == "Noun")
 			{
-				dictonaryURL = "./Poem_Generator_files/Dictonary_Nouns.json";
+				//dictonaryURL = "./dictionaries/nouns.json";
 				poemSentences[i].words[j] = JSON_object2[Math.floor(Math.random()*JSON_object2.length)].word;
 			}
 			else if (poemSentences[i].words[j] == "Adjective")
 			{
-				dictonaryURL = "./Poem_Generator_files/Dictonary_Adjectives.json";
+				//dictonaryURL = "./dictionaries/adjectives.json";
 				poemSentences[i].words[j] = JSON_object3[Math.floor(Math.random()*JSON_object3.length)].word;
 			}
 		}
@@ -158,40 +193,4 @@ function chooseTemplates()
 			break;
 	} while (true);	
 	return templates;
-}
-function generatePoem(templatesURL, form)
-{
-/*
-Функция, котороя берет четыре шаблона с рифмой АBАB и подставляет в них слова
-Первый шаблон берется любым. Третий берется такой, у которого последняя морфема та же, что и у первого. 
-Второй шаблон берется любой, у которого на конце морфема, отличающаяся от морфемы на конце первого и третьего шаблонов. 
-Четвертый шаблон с такой же морфемой на конце, что и у второго
-*/
-	request1 = new XMLHttpRequest();
-	request1.open("GET", "./Poem_Generator_files/Dictonary_Verbs.json", false);
-	request1.send(null);
-	JSON_object1 = JSON.parse(request1.responseText);
-
-	request2 = new XMLHttpRequest();
-	request2.open("GET", "./Poem_Generator_files/Dictonary_Nouns.json", false);
-	request2.send(null);
-	JSON_object2 = JSON.parse(request2.responseText);
-
-	request3 = new XMLHttpRequest();
-	request3.open("GET", "./Poem_Generator_files/Dictonary_Adjectives.json", false);
-	request3.send(null);
-	JSON_object3 = JSON.parse(request3.responseText);
-
-	request_templates = new XMLHttpRequest();
-	request_templates.open("GET", "./Poem_Generator_files/Templates.json", false);
-	request_templates.send(null);
-	JSON_object_templates = JSON.parse(request_templates.responseText);
-
-	var poemSentences = new Array();
-	var templates = chooseTemplates();
-	parseTemplates(poemSentences, templates);
-	templatize(poemSentences);
-	createRhyme(poemSentences,templates);
-	printPoem(form, poemSentences);
-	alert(strofesNumber);
 }
