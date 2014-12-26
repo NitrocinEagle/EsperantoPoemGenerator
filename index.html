@@ -1,14 +1,37 @@
 <html>
+
 	<head>
+	<title>Esperanto Poem Generator</title>
 	<meta charset="utf-8">
-	<script type="text/javascript" src="./Poem_Generator_files/PoemGenerator.js"></script>	
+	<script type="text/javascript" src="./scripts/poemGenerator.js"></script>	
 	</head>
-	<body>	
+	<body backgroun="red">
+	<p>Welcome to the esperanto poem generator page. Here you can generate some poem on esperanto just ckicked on the button "Generate!". 
+	Also you are able to add words to the dictonary and templates. Yuo kust need to add it to these files:</p>	
+	<ul>
+	<li><a href="./templates/SentenseTemplates.json">"Templates.json"</a></li>
+	<li><a href="./dictionaries/nouns.json">"Dictonary_Verbs.json"</a></li>
+	<li><a href="./dictionaries/verbs.json">"Dictonary_Nouns.json"</a></li>
+	<li><a href="./dictionaries/adjectives.json">"Dictonary_Adjectives.json"</a></li>
+	</ul>
+	<p>This makes random poems. First, it randomly selects sentence patterns.
+	Then, wherever the pattern has a number, it randomly selects a word from one
+	of the numbered word lists. You can either choose one of the sample sets of
+	words and sentence patterns, or you can enter your own words and sentence
+	patterns.</p>
+	</ul>
 	<form name="form" id="form" action="">
-	<textarea cols="40" rows="10" name="sentences"></textarea></form>	
+	<textarea cols="40" rows="20" name="sentences"></textarea>
+	<select name="S" onchange="setNumberStrofes(this.options[this.selectedIndex].text)">
+    <option selected="4">4</option>
+    <option>8</option>
+    <option>12</option>
+    <option>16</option>
+    <option>20</option>
+  </select>
+	<input type="button" value="Generate!" onclick="generatePoem(this.form)"><br>
+	</form>	
 	
-	<script>
-	lol("./Poem_Generator_files/Templates.json", this.form);
-	</script>
 	</body>
+
 </html>
